@@ -1,0 +1,6 @@
+Documentatiom for the project.
+
+Mobile first responsive approach.
+
+
+Travel web app using next js and node js mongodb as database.

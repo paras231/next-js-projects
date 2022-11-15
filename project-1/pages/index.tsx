@@ -1,8 +1,6 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
-import About from "./about";
+import HomeTabs from "../components/HomeTabs";
 
 export default function Home() {
   return (
@@ -13,10 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <About name={"Paras sharma"} />
-
-      <h1>Home page</h1>
-      <Link href="/about">Click</Link>
+      <HomeTabs />
     </div>
   );
 }
