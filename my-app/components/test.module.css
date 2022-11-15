@@ -1,0 +1,15 @@
+.myimg{
+    border-radius: 30px;
+}
+
+.mainNav ul{
+
+    display: flex;
+    justify-content: center;
+    gap: 3vmax;
+    list-style-type: none;
+    font-weight: 600;
+    }
+    .mainNav ul li{
+      cursor: pointer;
+    }
