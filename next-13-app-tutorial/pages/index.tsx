@@ -1,8 +1,22 @@
+import { useEffect, useContext } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Home_page from "./Home/Home_page";
+import { AuthContext } from "../AuthContext/Authcontext";
+import { useRouter } from "next/router";
 export default function Home() {
+  const router = useRouter();
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push("/");
+    } else {
+      router.push("/auth/signup");
+    }
+  }, [currentUser]);
+
   return (
     <div className={styles.container}>
       <Head>
