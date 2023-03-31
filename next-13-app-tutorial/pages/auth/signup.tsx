@@ -11,16 +11,19 @@ const Signup = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState<File | null>(null);
 
   const [userName, setUserName] = useState("");
   const [loading, setLoadin] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImg(e.currentTarget.files[0]);
-    console.log(img);
+    if (e.currentTarget.files != null && e.currentTarget.files.length > 0) {
+      const file = e.currentTarget.files[0];
+      if (file != null) {
+        setImg(file);
+      }
+    }
   };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setLoadin(true);
     e.preventDefault();
