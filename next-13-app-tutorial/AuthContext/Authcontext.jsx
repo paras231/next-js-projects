@@ -6,13 +6,11 @@ const initialState = {
   currentUser: null,
 };
 
-type providerProps = {
-  children: React.ReactNode;
-};
+
 
 export const AuthContext = createContext(initialState);
 
-export const AuthContextProvider = ({ children }: providerProps) => {
+export const AuthContextProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState({});
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
