@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import Head from "next/head";
 import CreatePost from "../../components/CreatePost";
+import CreateTodo from "../../components/CreateTodo";
 import { AuthContext } from "../../AuthContext/Authcontext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../Firebase";
@@ -15,7 +16,7 @@ const Home_page = () => {
       </Head>
       <h3>Home Page</h3>
       <DashBoard userName="Paras Sharma" totalUsers={20} />
-      <CreatePost />
+      <CreateTodo />
       <button onClick={() => signOut(auth)}>Logout</button>
     </>
   );

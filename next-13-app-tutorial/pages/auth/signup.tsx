@@ -29,6 +29,32 @@ const Signup = () => {
     e.preventDefault();
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
+      // upload user profile in firebase storage->
+      // create a unique image name->
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${userName + res.user.uid}`);
+      await uploadBytesResumable(storageRef, img).then(() => {
+        getDownloadURL(storageRef).then(async (downloadUrl) => {
+          try {
+            //Update profile
+            await updateProfile(res.user, {
+              displayName: userName,
+              photoURL: downloadUrl,
+            });
+            // create user on firestore->
+            await setDoc(doc(db, "users", res.user.uid), {
+              uid: res.user.uid,
+              userName,
+              email,
+              password,
+              photoURL: downloadUrl,
+            });
+          } catch (error) {
+            setLoadin(false);
+            console.log(error);
+          }
+        });
+      });
       console.log(res);
       setLoadin(false);
       router.push("/");
@@ -61,11 +87,15 @@ const Signup = () => {
     }
   };
 
+  const senToLogin = () => {
+    router.push("/auth/login");
+  };
+
   return (
     <>
-    <Head>
-      <title>Auth next js</title>
-    </Head>
+      <Head>
+        <title>Auth next js</title>
+      </Head>
       <h1>sign up page</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="">Email</label>
@@ -82,6 +112,12 @@ const Signup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <label htmlFor="">Username</label>
+        <input
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
         <label htmlFor="">Profile Pic</label>
         <input type="file" onChange={handleImageChange} />
         <button type="submit">Submit</button>
@@ -89,6 +125,9 @@ const Signup = () => {
       </form>
 
       <button onClick={handleSignupByGoogle}>Signup with Google</button>
+      <span>
+        Already have an account ? <p onClick={senToLogin}>Login Here</p>
+      </span>
     </>
   );
 };
