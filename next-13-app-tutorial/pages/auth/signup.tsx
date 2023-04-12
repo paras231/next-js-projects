@@ -33,28 +33,31 @@ const Signup = () => {
       // create a unique image name->
       const date = new Date().getTime();
       const storageRef = ref(storage, `${userName + res.user.uid}`);
-      await uploadBytesResumable(storageRef, img).then(() => {
-        getDownloadURL(storageRef).then(async (downloadUrl) => {
-          try {
-            //Update profile
-            await updateProfile(res.user, {
-              displayName: userName,
-              photoURL: downloadUrl,
-            });
-            // create user on firestore->
-            await setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              userName,
-              email,
-              password,
-              photoURL: downloadUrl,
-            });
-          } catch (error) {
-            setLoadin(false);
-            console.log(error);
-          }
+      if (img) {
+        await uploadBytesResumable(storageRef, img).then(() => {
+          getDownloadURL(storageRef).then(async (downloadUrl) => {
+            try {
+              //Update profile
+              await updateProfile(res.user, {
+                displayName: userName,
+                photoURL: downloadUrl,
+              });
+              // create user on firestore->
+              await setDoc(doc(db, "users", res.user.uid), {
+                uid: res.user.uid,
+                userName,
+                email,
+                password,
+                photoURL: downloadUrl,
+              });
+            } catch (error) {
+              setLoadin(false);
+              console.log(error);
+            }
+          });
         });
-      });
+      }
+
       console.log(res);
       setLoadin(false);
       router.push("/");
